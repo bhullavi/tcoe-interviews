@@ -1,4 +1,4 @@
-
+const SearchPage = require('../pageobjects/searchpage');
 
 describe('validate test cases', () => {
 
@@ -7,17 +7,12 @@ describe('validate test cases', () => {
     it('verify search', async() => {
         browser.url("https://www.cnn.com/")
 
-        const search = await $(".sc-bdVaJa");
+        await SearchPage.openSearch();
         // to check whether button is clickable
 
-        await expect(search).toBeClickable()
-        await search.click()
-     
-        const click = await $("#header-search-bar");
-
-        await click.setValue("Narendra Modi")
+        await SearchPage.startSearch('Narendra Modi');
         // to check input text contain Narendra Modi in it.
-        await expect(click).toHaveValue('Narendra Modi', { ignoreCase: true })
+        await expect(SearchPage.searchHeader).toHaveValue('Narendra Modi', { ignoreCase: true })
         await browser.executeAsync((done) => {
                 setTimeout(done, 2000);
             });
@@ -55,11 +50,11 @@ describe('validate test cases', () => {
         browser.url("https://edition.cnn.com/videos/business/2022/11/16/taylor-swift-concert-tour-presale-tickets-ticketmaster-cprog-cnntm-vpx.cnn");
         // to check whether url have edition word in it.
        
-        await expect(browser).toHaveUrlContaining('edition')
+        await expect(browser).toHaveUrlContaining('entertainment')
 
         const video= await $(".video-inline__video-resource");
         // to check whether button is clickable
-
+        await video.waitForDisplayed({timeout :3000});
        await expect(video).toBeClickable()
         await video.click()
         await browser.executeAsync((done) => {
